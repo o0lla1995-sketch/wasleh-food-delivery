@@ -17,18 +17,25 @@ const Orders = () => {
   useEffect(() => {
     if (!restaurant?.id) return;
 
+    // Note: We fetch all orders for this restaurant (single equality filter + orderBy).
+    // Composite indexes (restaurantId + status + createdAt) would let us filter
+    // server-side, but Firestore Admin SDK can't create indexes here.
+    // Client-side filtering by status avoids the index requirement.
     const ordersRef = collection(db, "orders");
     const q = query(
       ordersRef,
       where("restaurantId", "==", restaurant.id),
-      where("status", "==", "PENDING"),
       orderBy("createdAt", "desc")
     );
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const items = [];
       querySnapshot.forEach((doc) => {
-        items.push({ ...doc.data(), id: doc.id });
+        const data = doc.data();
+        // Filter client-side to only PENDING orders
+        if (data.status === "PENDING") {
+          items.push({ ...data, id: doc.id });
+        }
       });
       setOrders(items);
     });
