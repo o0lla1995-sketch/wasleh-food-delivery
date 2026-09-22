@@ -23,6 +23,7 @@ on:
       - 'user-side/**'
       - 'driver-app/**'
       - '.github/workflows/build-android.yml'
+      - 'scripts/patch_gradle_signing.py'
   pull_request:
     branches:
       - main
@@ -71,16 +72,16 @@ jobs:
             echo "ERROR: google-services.json not found in user-side/."
             exit 1
           fi
-          echo "✓ google-services.json present"
+          echo "google-services.json present"
 
       - name: Create .env from .env.example (if missing)
         working-directory: user-side
         run: |
           if [ ! -f .env ]; then
             cp .env.example .env
-            echo "✓ Created .env from .env.example"
+            echo "Created .env from .env.example"
           else
-            echo "✓ .env already present"
+            echo ".env already present"
           fi
 
       - name: Generate native Android project (if missing)
@@ -89,7 +90,7 @@ jobs:
           if [ ! -d android ]; then
             npx expo prebuild --platform android --no-install
           else
-            echo "✓ android/ folder exists"
+            echo "android/ folder exists"
           fi
 
       - name: Verify wasleh.keystore is in place
@@ -99,7 +100,11 @@ jobs:
             echo "ERROR: wasleh.keystore not found in user-side/android/app/"
             exit 1
           fi
-          echo "✓ wasleh.keystore present"
+          echo "wasleh.keystore present"
+
+      - name: Patch build.gradle to ensure release signing config
+        working-directory: user-side/android/app
+        run: python3 ${{ github.workspace }}/scripts/patch_gradle_signing.py
 
       - name: Set gradle properties
         working-directory: user-side/android
@@ -113,28 +118,27 @@ jobs:
         run: |
           BUILD_TYPE="${{ github.event.inputs.build_type || 'release-apk' }}"
           if [ "$BUILD_TYPE" = "debug" ]; then
-            echo "=== Building DEBUG APK ==="
+            echo "Building DEBUG APK"
             ./gradlew :app:assembleDebug --no-daemon
             cp app/build/outputs/apk/debug/app-debug.apk ../../wasleh-customer-debug.apk
           else
-            echo "=== Building RELEASE APK (self-contained, no Metro needed) ==="
+            echo "Building RELEASE APK (self-contained, no Metro needed)"
             ./gradlew :app:assembleRelease --no-daemon
             cp app/build/outputs/apk/release/app-release.apk ../../wasleh-customer-release.apk
           fi
 
       - name: Verify APK contains JS bundle (release only)
-        working-directory: user-side
         if: ${{ (github.event.inputs.build_type || 'release-apk') != 'debug' }}
         run: |
-          APK_PATH="../wasleh-customer-release.apk"
+          APK_PATH="wasleh-customer-release.apk"
           if [ -f "$APK_PATH" ]; then
-            echo "=== APK contents (assets folder) ==="
-            unzip -l "$APK_PATH" | grep -E "assets/index.android.bundle|assets/index.android.bundle.meta" || {
-              echo "✗ ERROR: index.android.bundle not found in APK!"
+            echo "APK contents (assets folder):"
+            unzip -l "$APK_PATH" | grep -E "assets/index.android.bundle" || {
+              echo "ERROR: index.android.bundle not found in APK!"
               echo "The APK will crash with 'Unable to load script' on the phone."
               exit 1
             }
-            echo "✓ JS bundle is embedded - APK will work standalone on the phone"
+            echo "JS bundle is embedded - APK will work standalone on the phone"
           fi
 
       - name: Upload APK artifact
@@ -184,16 +188,16 @@ jobs:
             echo "ERROR: google-services.json not found in driver-app/."
             exit 1
           fi
-          echo "✓ google-services.json present"
+          echo "google-services.json present"
 
       - name: Create .env from .env.example (if missing)
         working-directory: driver-app
         run: |
           if [ ! -f .env ]; then
             cp .env.example .env
-            echo "✓ Created .env from .env.example"
+            echo "Created .env from .env.example"
           else
-            echo "✓ .env already present"
+            echo ".env already present"
           fi
 
       - name: Generate native Android project
@@ -204,73 +208,11 @@ jobs:
         working-directory: driver-app
         run: |
           cp wasleh.keystore android/app/wasleh.keystore
-          echo "✓ Copied wasleh.keystore to android/app/"
+          echo "Copied wasleh.keystore to android/app/"
 
       - name: Patch build.gradle to add release signing config
         working-directory: driver-app/android/app
-        run: |
-          # Check if release signingConfig is already in place
-          if grep -q "signingConfigs.release" build.gradle; then
-            echo "✓ build.gradle already has release signing config"
-          else
-            echo "=== Patching build.gradle ==="
-            # Use Python for reliable multi-line replacement
-            python3 << 'PYEOF'
-            with open('build.gradle', 'r') as f:
-                content = f.read()
-
-            # 1. Add release block to signingConfigs
-            old_signing = """    signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
-    }"""
-            new_signing = """    signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
-        release {
-            storeFile file('wasleh.keystore')
-            storePassword 'wasleh123'
-            keyAlias 'wasleh'
-            keyPassword 'wasleh123'
-        }
-    }"""
-            if old_signing in content:
-                content = content.replace(old_signing, new_signing)
-                print("  ✓ Added release block to signingConfigs")
-            else:
-                print("  ⚠ Could not find expected signingConfigs block (may already be patched)")
-
-            # 2. Change release buildType to use signingConfigs.release
-            old_release = """        release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug"""
-            new_release = """        release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.release"""
-            if old_release in content:
-                content = content.replace(old_release, new_release)
-                print("  ✓ Updated release buildType to use signingConfigs.release")
-            else:
-                print("  ⚠ Could not find release buildType block (may already be patched)")
-
-            with open('build.gradle', 'w') as f:
-                f.write(content)
-            PYEOF
-          fi
-          
-          echo ""
-          echo "=== Verify: signingConfigs section ==="
-          grep -A2 "signingConfigs\|release {" build.gradle | head -25
+        run: python3 ${{ github.workspace }}/scripts/patch_gradle_signing.py
 
       - name: Set gradle properties
         working-directory: driver-app/android
@@ -284,28 +226,27 @@ jobs:
         run: |
           BUILD_TYPE="${{ github.event.inputs.build_type || 'release-apk' }}"
           if [ "$BUILD_TYPE" = "debug" ]; then
-            echo "=== Building DEBUG APK ==="
+            echo "Building DEBUG APK"
             ./gradlew :app:assembleDebug --no-daemon
             cp app/build/outputs/apk/debug/app-debug.apk ../../wasleh-driver-debug.apk
           else
-            echo "=== Building RELEASE APK (self-contained, no Metro needed) ==="
+            echo "Building RELEASE APK (self-contained, no Metro needed)"
             ./gradlew :app:assembleRelease --no-daemon
             cp app/build/outputs/apk/release/app-release.apk ../../wasleh-driver-release.apk
           fi
 
       - name: Verify APK contains JS bundle (release only)
-        working-directory: driver-app
         if: ${{ (github.event.inputs.build_type || 'release-apk') != 'debug' }}
         run: |
-          APK_PATH="../wasleh-driver-release.apk"
+          APK_PATH="wasleh-driver-release.apk"
           if [ -f "$APK_PATH" ]; then
-            echo "=== APK contents (assets folder) ==="
-            unzip -l "$APK_PATH" | grep -E "assets/index.android.bundle|assets/index.android.bundle.meta" || {
-              echo "✗ ERROR: index.android.bundle not found in APK!"
+            echo "APK contents (assets folder):"
+            unzip -l "$APK_PATH" | grep -E "assets/index.android.bundle" || {
+              echo "ERROR: index.android.bundle not found in APK!"
               echo "The APK will crash with 'Unable to load script' on the phone."
               exit 1
             }
-            echo "✓ JS bundle is embedded - APK will work standalone on the phone"
+            echo "JS bundle is embedded - APK will work standalone on the phone"
           fi
 
       - name: Upload APK artifact
