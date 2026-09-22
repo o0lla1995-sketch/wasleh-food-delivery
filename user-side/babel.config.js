@@ -1,9 +1,7 @@
 module.exports = function (api) {
   api.cache(true);
   return {
-    presets: [
-      ["babel-preset-expo", { jsxImportSource: "nativewind" }],
-    ],
+    presets: ["babel-preset-expo"],
     plugins: [
       ["transform-inline-environment-variables", {
         "include": [
@@ -14,6 +12,7 @@ module.exports = function (api) {
           "EXPO_PUBLIC_FIREBASE_MSG_SENDER_ID",
           "EXPO_PUBLIC_FIREBASE_APP_ID",
           "EXPO_PUBLIC_GOOGLE_MAPS_API_KEY",
+          "EXPO_PUBLIC_FIREBASE_ANDROID_APP_ID_CUSTOMER",
         ],
       }],
     ],
