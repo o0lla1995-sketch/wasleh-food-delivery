@@ -106,12 +106,9 @@ jobs:
         working-directory: user-side/android/app
         run: python3 ${{ github.workspace }}/scripts/patch_gradle_signing.py
 
-      - name: Set gradle properties
+      - name: Set gradle properties (force JSC engine to avoid Hermes bytecode mismatch)
         working-directory: user-side/android
-        run: |
-          if ! grep -q "FLIPPER_VERSION" gradle.properties; then
-            echo "FLIPPER_VERSION=0.182.0" >> gradle.properties
-          fi
+        run: python3 ${{ github.workspace }}/scripts/patch_gradle_properties.py
 
       - name: Build APK (release)
         working-directory: user-side/android
@@ -214,12 +211,9 @@ jobs:
         working-directory: driver-app/android/app
         run: python3 ${{ github.workspace }}/scripts/patch_gradle_signing.py
 
-      - name: Set gradle properties
+      - name: Set gradle properties (force JSC engine to avoid Hermes bytecode mismatch)
         working-directory: driver-app/android
-        run: |
-          if ! grep -q "FLIPPER_VERSION" gradle.properties; then
-            echo "FLIPPER_VERSION=0.182.0" >> gradle.properties
-          fi
+        run: python3 ${{ github.workspace }}/scripts/patch_gradle_properties.py
 
       - name: Build APK (release)
         working-directory: driver-app/android
