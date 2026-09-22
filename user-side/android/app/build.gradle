@@ -137,6 +137,20 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('WASLEH_UPLOAD_STORE_FILE') && file(WASLEH_UPLOAD_STORE_FILE).exists()) {
+                storeFile file(WASLEH_UPLOAD_STORE_FILE)
+                storePassword WASLEH_UPLOAD_STORE_PASSWORD
+                keyAlias WASLEH_UPLOAD_KEY_ALIAS
+                keyPassword WASLEH_UPLOAD_KEY_PASSWORD
+            } else {
+                // Fallback: use the wasleh.keystore committed in the repo
+                storeFile file('wasleh.keystore')
+                storePassword 'wasleh123'
+                keyAlias 'wasleh'
+                keyPassword 'wasleh123'
+            }
+        }
     }
     buildTypes {
         debug {
@@ -145,7 +159,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
