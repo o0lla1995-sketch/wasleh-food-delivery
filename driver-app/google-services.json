@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "380607552072",
+    "project_id": "wasleh-9d729",
+    "storage_bucket": "wasleh-9d729.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380607552072:android:5306a44a3a2567354fd67d",
+        "android_client_info": {
+          "package_name": "com.wasleh.customer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAszFcOcztjOyj3IWhXMfxLKqwyTo0JJlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380607552072:android:c15fb13399194b914fd67d",
+        "android_client_info": {
+          "package_name": "com.wasleh.driver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAszFcOcztjOyj3IWhXMfxLKqwyTo0JJlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

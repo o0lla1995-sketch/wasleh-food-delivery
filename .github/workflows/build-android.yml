@@ -1,0 +1,198 @@
+name: Build Wasleh Android Apps
+
+# This workflow builds debug APKs for both the customer and driver apps.
+# Triggered manually from the Actions tab, or on push to main (only if app code changed).
+#
+# Output:
+#   - wasleh-customer-debug.apk (com.wasleh.customer)
+#   - wasleh-driver-debug.apk (com.wasleh.driver)
+# Both are uploaded as workflow artifacts, downloadable for 90 days.
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type (debug or release-apk)'
+        required: true
+        default: 'debug'
+        type: choice
+        options:
+          - debug
+          - release-apk
+  push:
+    branches:
+      - main
+    paths:
+      - 'user-side/**'
+      - 'driver-app/**'
+      - '.github/workflows/build-android.yml'
+  pull_request:
+    branches:
+      - main
+
+env:
+  JAVA_VERSION: '17'
+  NODE_VERSION: '20'
+
+jobs:
+  build-customer:
+    name: Build Customer App APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+          cache-dependency-path: user-side/yarn.lock
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          packager: yarn
+          expo-cache: true
+
+      - name: Install dependencies
+        working-directory: user-side
+        run: yarn install --frozen-lockfile
+
+      - name: Verify Firebase config
+        working-directory: user-side
+        run: |
+          if [ ! -f google-services.json ]; then
+            echo "ERROR: google-services.json not found. Add it to user-side/ or generate via Firebase console."
+            exit 1
+          fi
+          echo "✓ google-services.json present"
+
+      - name: Verify .env file
+        working-directory: user-side
+        run: |
+          if [ ! -f .env ]; then
+            echo "ERROR: .env not found. Copy .env.example to .env and fill in real values."
+            exit 1
+          fi
+          echo "✓ .env present"
+
+      - name: Generate native Android project
+        working-directory: user-side
+        run: npx expo prebuild --platform android --no-install
+
+      - name: Set gradle properties (FLIPPER_VERSION, etc.)
+        working-directory: user-side/android
+        run: |
+          if ! grep -q "FLIPPER_VERSION" gradle.properties; then
+            echo "FLIPPER_VERSION=0.182.0" >> gradle.properties
+          fi
+
+      - name: Build APK
+        working-directory: user-side/android
+        run: |
+          BUILD_TYPE="${{ github.event.inputs.build_type || 'debug' }}"
+          if [ "$BUILD_TYPE" = "release-apk" ]; then
+            ./gradlew :app:assembleRelease --no-daemon
+            cp app/build/outputs/apk/release/app-release.apk ../../wasleh-customer-release.apk
+          else
+            ./gradlew :app:assembleDebug --no-daemon
+            cp app/build/outputs/apk/debug/app-debug.apk ../../wasleh-customer-debug.apk
+          fi
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wasleh-customer-apk
+          path: wasleh-customer-*.apk
+          retention-days: 90
+          if-no-files-found: error
+
+  build-driver:
+    name: Build Driver App APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+          cache-dependency-path: driver-app/yarn.lock
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          packager: yarn
+          expo-cache: true
+
+      - name: Install dependencies
+        working-directory: driver-app
+        run: yarn install --frozen-lockfile
+
+      - name: Verify Firebase config
+        working-directory: driver-app
+        run: |
+          if [ ! -f google-services.json ]; then
+            echo "ERROR: google-services.json not found. Add it to driver-app/ or generate via Firebase console."
+            exit 1
+          fi
+          echo "✓ google-services.json present"
+
+      - name: Verify .env file
+        working-directory: driver-app
+        run: |
+          if [ ! -f .env ]; then
+            echo "ERROR: .env not found. Copy .env.example to .env and fill in real values."
+            exit 1
+          fi
+          echo "✓ .env present"
+
+      - name: Generate native Android project
+        working-directory: driver-app
+        run: npx expo prebuild --platform android --no-install
+
+      - name: Set gradle properties
+        working-directory: driver-app/android
+        run: |
+          if ! grep -q "FLIPPER_VERSION" gradle.properties; then
+            echo "FLIPPER_VERSION=0.182.0" >> gradle.properties
+          fi
+
+      - name: Build APK
+        working-directory: driver-app/android
+        run: |
+          BUILD_TYPE="${{ github.event.inputs.build_type || 'debug' }}"
+          if [ "$BUILD_TYPE" = "release-apk" ]; then
+            ./gradlew :app:assembleRelease --no-daemon
+            cp app/build/outputs/apk/release/app-release.apk ../../wasleh-driver-release.apk
+          else
+            ./gradlew :app:assembleDebug --no-daemon
+            cp app/build/outputs/apk/debug/app-debug.apk ../../wasleh-driver-debug.apk
+          fi
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wasleh-driver-apk
+          path: wasleh-driver-*.apk
+          retention-days: 90
+          if-no-files-found: error

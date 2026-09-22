@@ -1,0 +1,25 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Firebase admin SDK - NEVER commit this (full admin access)
+firebase-admin/
+**/firebase-adminsdk*.json
+**/service-account*.json
+
+# Coolify session
+coolify_session.json
+
+# Build outputs
+**/android/app/build/
+**/android/.gradle/
+**/android/captures/
+**/.expo/
+
+# Lock files (keep yarn.lock committed)
+!yarn.lock
