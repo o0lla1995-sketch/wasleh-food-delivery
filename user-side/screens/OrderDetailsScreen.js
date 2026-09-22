@@ -12,7 +12,6 @@ import {
   query,
   where,
   onSnapshot,
-  orderBy,
 } from "firebase/firestore";
 import OptionsScreen from "./OptionsScreen";
 
@@ -23,23 +22,30 @@ const OrderDetailsScreen = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
+    if (!user?.uid) return;
     const ordersRef = collection(db, "orders");
-    const q = query(
-      ordersRef,
-      where("userId", "==", user.uid),
-      orderBy("createdAt", "desc")
-    );
+    // Single filter (no composite index needed)
+    const q = query(ordersRef, where("userId", "==", user.uid));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let item = [];
+      let items = [];
       querySnapshot.forEach((doc) => {
-        item.push({ ...doc.data(), id: doc.id });
+        items.push({ ...doc.data(), id: doc.id });
       });
-      setOrders(item);
-      console.log(orders);
+      // Sort client-side by createdAt desc
+      items.sort((a, b) => {
+        const aTime = a.createdAt?.toMillis?.() || 0;
+        const bTime = b.createdAt?.toMillis?.() || 0;
+        return bTime - aTime;
+      });
+      setOrders(items);
+    }, (error) => {
+      console.log('Firestore error:', error);
     });
 
-    return unsubscribe; // Cleanup function to unsubscribe from real-time updates
+    return () => {
+      try { unsubscribe(); } catch (e) {}
+    };
   }, []);
 
   return (

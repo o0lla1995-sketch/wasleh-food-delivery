@@ -1,17 +1,14 @@
-import { useState, useEffect, useRef, useMemo, useDebugValue } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { View, Text, FlatList, useWindowDimensions } from "react-native";
 import BottomSheet from "@gorhom/bottom-sheet";
-import orders from "../../../assets/data/orders.json";
 import OrderItem from "../../components/OrderItem";
 import MapView, { Marker } from "react-native-maps";
 import { Entypo } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { db } from "../../../firebase/firebase.js";
 import {
   collection,
   query,
   where,
-  orderBy,
   onSnapshot,
 } from "firebase/firestore";
 
@@ -20,21 +17,32 @@ const OrdersScreen = () => {
 
   useEffect(() => {
     const ordersRef = collection(db, "orders");
-    const q = query(
-      ordersRef,
-      where("status", "==", "READY"),
-      orderBy("createdAt", "desc")
-    );
+    // Single filter (no composite index needed)
+    const q = query(ordersRef, where("status", "==", "READY"));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let item = [];
+      let items = [];
       querySnapshot.forEach((doc) => {
-        item.push({ ...doc.data(), id: doc.id });
+        items.push({ ...doc.data(), id: doc.id });
       });
-      setOrders(item);
+      // Sort client-side by createdAt desc
+      items.sort((a, b) => {
+        const aTime = a.createdAt?.toMillis?.() || 0;
+        const bTime = b.createdAt?.toMillis?.() || 0;
+        return bTime - aTime;
+      });
+      setOrders(items);
+    }, (error) => {
+      console.log('Firestore onSnapshot error:', error);
     });
 
-    return unsubscribe; // Cleanup function to unsubscribe from real-time updates
+    return () => {
+      try {
+        unsubscribe();
+      } catch (e) {
+        console.log('unsubscribe error:', e);
+      }
+    };
   }, []);
 
 

@@ -23,7 +23,6 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "../../../firebase/firebase";
-import Config from "react-native-config";
 import DishInfo from "../../components/DishInfo";
 import styles from "./styles.js";
 
@@ -201,7 +200,7 @@ const OrderDelivery = ({ route }) => {
           strokeWidth={5}
           waypoints={deliveryStatus === "READY" ? [restaurantLocation] : []}
           strokeColor="green"
-          apikey={process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY}
+          apikey="AIzaSyAszFcOcztjOyj3IWhXMfxLKqwyTo0JJlw"
           onReady={(result) => {
             // setIsDriverClose(result.distance <= 0.1);
             setTotalMinutes(result.duration);

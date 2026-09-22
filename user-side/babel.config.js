@@ -3,6 +3,7 @@ module.exports = function (api) {
   return {
     presets: ["babel-preset-expo"],
     plugins: [
+      "nativewind/babel",
       ["transform-inline-environment-variables", {
         "include": [
           "EXPO_PUBLIC_FIREBASE_API_KEY",
