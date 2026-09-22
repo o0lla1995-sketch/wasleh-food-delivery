@@ -1,7 +1,21 @@
 module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ["babel-preset-expo"],
-    plugins: ["nativewind/babel", "react-native-reanimated/plugin"],
+    presets: [
+      ["babel-preset-expo", { jsxImportSource: "nativewind" }],
+    ],
+    plugins: [
+      ["transform-inline-environment-variables", {
+        "include": [
+          "EXPO_PUBLIC_FIREBASE_API_KEY",
+          "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN",
+          "EXPO_PUBLIC_FIREBASE_PROJECT_ID",
+          "EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET",
+          "EXPO_PUBLIC_FIREBASE_MSG_SENDER_ID",
+          "EXPO_PUBLIC_FIREBASE_APP_ID",
+          "EXPO_PUBLIC_GOOGLE_MAPS_API_KEY",
+        ],
+      }],
+    ],
   };
 };

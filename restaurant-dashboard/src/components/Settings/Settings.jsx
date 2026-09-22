@@ -57,7 +57,7 @@ const Settings = () => {
                 name="name"
                 value={restaurantData.name}
                 onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded-2xl py-2 px-3 mt-4 focus:outline-none focus:ring focus:ring-green-200 focus:border-green-300"
+                className="w-full border border-gray-300 rounded-2xl py-2 px-3 mt-4 focus:outline-none focus:ring focus:ring-orange-200 focus:border-orange-300"
                 placeholder="Enter restaurant name"
               />
             </div>
@@ -70,7 +70,7 @@ const Settings = () => {
                 name="image"
                 value={restaurantData.image}
                 onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded-2xl py-2 px-3 mt-4 focus:outline-none focus:ring focus:ring-green-200 focus:border-green-300"
+                className="w-full border border-gray-300 rounded-2xl py-2 px-3 mt-4 focus:outline-none focus:ring focus:ring-orange-200 focus:border-orange-300"
                 placeholder="Enter Image link"
               />
             </div>
@@ -83,7 +83,7 @@ const Settings = () => {
                 name="address"
                 value={restaurantData.address}
                 onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded-2xl py-2 px-3 mt-4 focus:outline-none focus:ring focus:ring-green-200 focus:border-green-300"
+                className="w-full border border-gray-300 rounded-2xl py-2 px-3 mt-4 focus:outline-none focus:ring focus:ring-orange-200 focus:border-orange-300"
                 placeholder="Enter restaurant address"
               />
             </div>
@@ -96,13 +96,13 @@ const Settings = () => {
                 name="genre"
                 value={restaurantData.genre}
                 onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded-2xl py-2 px-3 mt-4 focus:outline-none focus:ring focus:ring-green-200 focus:border-green-300"
+                className="w-full border border-gray-300 rounded-2xl py-2 px-3 mt-4 focus:outline-none focus:ring focus:ring-orange-200 focus:border-orange-300"
                 placeholder="Enter restaurant genre"
               />
             </div>
           </div>
 
-          <button className="ml-6 w-full my-3 cursor-pointer items-center gap-x-2 text-gray-700 font-semibold text-base p-2 rounded-xl  hover:bg-green-100 active:bg-green-400 duration-150 bg-green-100 border-l-4 border-b-4 border-green-500">
+          <button className="ml-6 w-full my-3 cursor-pointer items-center gap-x-2 text-gray-700 font-semibold text-base p-2 rounded-xl  hover:bg-orange-100 active:bg-orange-400 duration-150 bg-orange-100 border-l-4 border-b-4 border-orange-500">
             Update Details
           </button>
         </div>

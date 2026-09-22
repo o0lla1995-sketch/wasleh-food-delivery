@@ -53,7 +53,7 @@ const OrderDetailsScreen = () => {
               onPress={navigation.goBack}
               className="absolute top-4 left-4 bg-white p-2 rounded-full"
             >
-              <ArrowLeftIcon size={30} color="#00CCBB" />
+              <ArrowLeftIcon size={30} color="#FF6B35" />
             </TouchableOpacity>
 
             <View>

@@ -56,7 +56,7 @@ const AddDishModal = ({ setIsActive, restaurantId }) => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Name"
-                  className="w-full pl-2 pr-3 py-2 text-gray-500 bg-transparent outline-none border-2 focus:border-green-500 shadow-sm rounded-lg"
+                  className="w-full pl-2 pr-3 py-2 text-gray-500 bg-transparent outline-none border-2 focus:border-orange-500 shadow-sm rounded-lg"
                 />
               </div>
 
@@ -66,7 +66,7 @@ const AddDishModal = ({ setIsActive, restaurantId }) => {
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   placeholder="Price"
-                  className="w-full pl-2 pr-3 py-2 text-gray-500 bg-transparent outline-none border-2 focus:border-green-500 shadow-sm rounded-lg"
+                  className="w-full pl-2 pr-3 py-2 text-gray-500 bg-transparent outline-none border-2 focus:border-orange-500 shadow-sm rounded-lg"
                 />
               </div>
 
@@ -76,7 +76,7 @@ const AddDishModal = ({ setIsActive, restaurantId }) => {
                   value={image}
                   onChange={(e) => setImage(e.target.value)}
                   placeholder="Image link"
-                  className="w-full pl-2 pr-3 py-2 text-gray-500 bg-transparent outline-none border-2 focus:border-green-500 shadow-sm rounded-lg"
+                  className="w-full pl-2 pr-3 py-2 text-gray-500 bg-transparent outline-none border-2 focus:border-orange-500 shadow-sm rounded-lg"
                 />
               </div>
 
@@ -86,11 +86,11 @@ const AddDishModal = ({ setIsActive, restaurantId }) => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Description"
-                  className="w-full pl-2 pr-3 py-2 text-gray-500 bg-transparent outline-none border-2 focus:border-green-500 shadow-sm rounded-lg"
+                  className="w-full pl-2 pr-3 py-2 text-gray-500 bg-transparent outline-none border-2 focus:border-orange-500 shadow-sm rounded-lg"
                 />
               </div>
 
-              <button className="w-full my-3 cursor-pointer items-center gap-x-2 text-gray-700 text-base p-2 rounded-xl  hover:bg-green-100 active:bg-green-400 duration-150 bg-green-100 border-l-4 border-b-4 border-green-500">
+              <button className="w-full my-3 cursor-pointer items-center gap-x-2 text-gray-700 text-base p-2 rounded-xl  hover:bg-orange-100 active:bg-orange-400 duration-150 bg-orange-100 border-l-4 border-b-4 border-orange-500">
                 Add
               </button>
             </form>

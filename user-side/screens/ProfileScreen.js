@@ -135,7 +135,7 @@ const ProfileScreen = () => {
 
       <View className="p-5 bg-white shadow-xs">
         <TouchableOpacity className="absolute top-4 left-4 bg-white p-2 rounded-full">
-          <ArrowLeftIcon size={30} color="#00CCBB" />
+          <ArrowLeftIcon size={30} color="#FF6B35" />
         </TouchableOpacity>
 
         <View>
@@ -164,7 +164,7 @@ const ProfileScreen = () => {
               First Name
             </Text>
             <TextInput
-              className="bg-white border border-gray-200 text-base h-12 px-4 rounded-xl text-gray-700  focus:ring focus:ring-[#00CCBB] focus:border-[#00CCBB]"
+              className="bg-white border border-gray-200 text-base h-12 px-4 rounded-xl text-gray-700  focus:ring focus:ring-[#FF6B35] focus:border-[#FF6B35]"
               value={firstName}
               onChangeText={setFirstName}
             />
@@ -173,7 +173,7 @@ const ProfileScreen = () => {
           <View className="mb-4">
             <Text className="text-xl font-bold mb-2 text-black">Last Name</Text>
             <TextInput
-              className="bg-white border border-gray-200 text-base h-12 px-4 rounded-xl text-gray-700  focus:ring focus:ring-[#00CCBB] focus:border-[#00CCBB]"
+              className="bg-white border border-gray-200 text-base h-12 px-4 rounded-xl text-gray-700  focus:ring focus:ring-[#FF6B35] focus:border-[#FF6B35]"
               value={lastName}
               onChangeText={setLastName}
             />
@@ -184,7 +184,7 @@ const ProfileScreen = () => {
               Phone Number
             </Text>
             <TextInput
-              className="bg-white border border-gray-200 text-base h-12 px-4 rounded-xl text-gray-700  focus:ring focus:ring-[#00CCBB] focus:border-[#00CCBB]"
+              className="bg-white border border-gray-200 text-base h-12 px-4 rounded-xl text-gray-700  focus:ring focus:ring-[#FF6B35] focus:border-[#FF6B35]"
               value={phoneNumber}
               onChangeText={handlePhoneNumberChange}
               keyboardType="phone-pad"
@@ -199,7 +199,7 @@ const ProfileScreen = () => {
               Street Address
             </Text>
             <TextInput
-              className="bg-white border border-gray-200 text-base h-12 px-4 rounded-xl text-gray-700  focus:ring focus:ring-[#00CCBB] focus:border-[#00CCBB]"
+              className="bg-white border border-gray-200 text-base h-12 px-4 rounded-xl text-gray-700  focus:ring focus:ring-[#FF6B35] focus:border-[#FF6B35]"
               value={address}
               onChangeText={setAddress}
             />

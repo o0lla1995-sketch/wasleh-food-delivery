@@ -50,13 +50,13 @@ const OrderModal = ({ setIsActive, selectedOrder }) => {
     statusColor = "text-yellow-500";
   } else if (status === "READY") {
     statusText = "Ready for Pickup 🛵";
-    statusColor = "text-green-500";
+    statusColor = "text-orange-500";
   } else if (status === "PICKEDUP") {
     statusText = "Picked Up by Driver 🚲";
-    statusColor = "text-green-500"; // green
+    statusColor = "text-orange-500"; // green
   } else if (status === "COMPLETE") {
     statusText = "Delivered ✅";
-    statusColor = "text-green-500"; // green
+    statusColor = "text-orange-500"; // green
   }
 
   console.log("status:", status)
@@ -123,7 +123,7 @@ const OrderModal = ({ setIsActive, selectedOrder }) => {
                     <div className="w-2/4">
                       <button
                         onClick={() => setStatus("ACCEPTED")}
-                        className=" w-11/12 my-3 cursor-pointer items-center gap-x-2 text-gray-700 font-bold text-base p-2 rounded-xl  hover:bg-green-200 active:bg-green-400 duration-150 bg-green-200 border-l-4 border-b-4 border-green-500"
+                        className=" w-11/12 my-3 cursor-pointer items-center gap-x-2 text-gray-700 font-bold text-base p-2 rounded-xl  hover:bg-orange-200 active:bg-orange-400 duration-150 bg-orange-200 border-l-4 border-b-4 border-orange-500"
                       >
                         Accept
                       </button>
@@ -152,7 +152,7 @@ const OrderModal = ({ setIsActive, selectedOrder }) => {
                   <div className="w-2/4 mx-auto">
                     <button
                       onClick={() => { setStatus("READY") }}
-                      className=" w-11/12 my-3 cursor-pointer items-center gap-x-2 text-gray-700 font-bold text-base p-2 rounded-xl  hover:bg-green-200 active:bg-green-400 duration-150 bg-green-200 border-l-4 border-b-4 border-green-500"
+                      className=" w-11/12 my-3 cursor-pointer items-center gap-x-2 text-gray-700 font-bold text-base p-2 rounded-xl  hover:bg-orange-200 active:bg-orange-400 duration-150 bg-orange-200 border-l-4 border-b-4 border-orange-500"
                     >
                       Ready for Pickup
                     </button>

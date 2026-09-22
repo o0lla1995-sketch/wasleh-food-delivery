@@ -25,7 +25,7 @@ const DishInfo = ({ id, quantity }) => {
   return (
     <div className="flex items-center justify-between space-x-3 bg-white py-4 mt-4">
       <div className="flex items-center justify-evenly  ">
-        <div className="font-bold text-2xl text-green-500">
+        <div className="font-bold text-2xl text-orange-500">
           {quantity} x
         </div>
         <div className="ml-2 font-bold text-2xl pt-1 text-gray-700">

@@ -16,7 +16,7 @@ const MenuItem = ({ setIsActive, dishes, setIsRemoved }) => {
         </div>
         <div
           onClick={() => setIsActive(true)}
-          className="cursor-pointer inline-flex items-center justify-center gap-1 py-2 px-3 mt-2 font-medium text-sm text-center text-gray-700 bg-green-100 border-l-4 border-b-4 border-green-500 hover:bg-green-100 active:bg-green-400 duration-150 rounded-xl sm:mt-0"
+          className="cursor-pointer inline-flex items-center justify-center gap-1 py-2 px-3 mt-2 font-medium text-sm text-center text-gray-700 bg-orange-100 border-l-4 border-b-4 border-orange-500 hover:bg-orange-100 active:bg-orange-400 duration-150 rounded-xl sm:mt-0"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

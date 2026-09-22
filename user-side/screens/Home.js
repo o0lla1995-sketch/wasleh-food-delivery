@@ -164,7 +164,7 @@ const Home = () => {
                     onPress={() => setModalVisible(!modalVisible)}
                     className="rounded-full mr-4"
                   >
-                    <XCircleIcon color="#00CCBB" height={48} width={48} />
+                    <XCircleIcon color="#FF6B35" height={48} width={48} />
                   </TouchableOpacity>
                 </View>
                 <View className="w-full h-80 rounded-2xl overflow-hidden border border-gray-300">

@@ -1,0 +1,48 @@
+# Wasleh Restaurant Dashboard - Coolify / Docker Compose
+#
+# Usage on Coolify:
+#   1. New Project -> Import this docker-compose.yml
+#   2. Set the environment variables in Coolify's "Environment Variables" tab
+#   3. Deploy
+#
+# Usage locally:
+#   docker compose up --build -d
+#
+# The mobile apps (customer/driver) are Expo apps and are NOT deployed as
+# Docker services — they ship via EAS Build → Google Play / App Store.
+
+version: "3.8"
+
+services:
+  wasleh-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wasleh-dashboard
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Build-time vars (already baked into the image, but also set runtime for parity)
+      NEXT_PUBLIC_FIREBASE_API_KEY: ${NEXT_PUBLIC_FIREBASE_API_KEY:-}
+      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN:-}
+      NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${NEXT_PUBLIC_FIREBASE_PROJECT_ID:-}
+      NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET:-}
+      NEXT_PUBLIC_FIREBASE_MSG_SENDER_ID: ${NEXT_PUBLIC_FIREBASE_MSG_SENDER_ID:-}
+      NEXT_PUBLIC_FIREBASE_APP_ID: ${NEXT_PUBLIC_FIREBASE_APP_ID:-}
+      # Runtime-only config
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - wasleh-net
+
+networks:
+  wasleh-net:
+    driver: bridge

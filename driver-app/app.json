@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "UberEatsCourier",
-    "slug": "UberEatsCourier",
+    "name": "Wasleh Driver",
+    "slug": "wasleh-driver",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FF6B35"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -17,16 +17,24 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.wasleh.driver"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#FF6B35"
+      },
+      "package": "com.wasleh.driver"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
+    },
+    "owner": "wasleh"
   }
 }

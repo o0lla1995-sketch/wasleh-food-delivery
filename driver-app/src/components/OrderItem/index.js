@@ -9,7 +9,7 @@ const OrderItem = ({ order }) => {
       style={{
         flexDirection: "row",
         margin: 10,
-        borderColor: "#3FC060",
+        borderColor: "#FF6B35",
         borderWidth: 2,
         borderRadius: 12,
       }}
@@ -48,7 +48,7 @@ const OrderItem = ({ order }) => {
       <View
         style={{
           padding: 5,
-          backgroundColor: "#3FC060",
+          backgroundColor: "#FF6B35",
           borderBottomRightRadius: 10,
           borderTopRightRadius: 10,
           alignItems: "center",

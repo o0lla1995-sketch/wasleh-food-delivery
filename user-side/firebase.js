@@ -8,14 +8,13 @@ import {
 } from "firebase/auth/react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
 const firebaseConfig = {
-  apiKey: "AIzaSyBJcwDzUMNJLKzAEyvRwACMYOrUS1u3oR0",
-  authDomain: "food-delivery-e0cba.firebaseapp.com",
-  projectId: "food-delivery-e0cba",
-  storageBucket: "food-delivery-e0cba.appspot.com",
-  messagingSenderId: "595569381333",
-  appId: "1:595569381333:web:6872be5d474cf64473775c",
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MSG_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
 };
 
 export const app = initializeApp(firebaseConfig);
@@ -23,7 +22,4 @@ export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
 });
 
-//init database
 export const db = getFirestore(app);
-
-

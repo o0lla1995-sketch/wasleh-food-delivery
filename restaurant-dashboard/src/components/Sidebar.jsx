@@ -41,9 +41,9 @@ const Sidebar = () => {
                 {navigation.map((item, index) => (
                   <li key={index} onClick={() => setActive(index)}>
                     <div
-                      className={`my-3 cursor-pointer flex items-center gap-x-2 text-gray-700 text-base p-2 rounded-xl  hover:bg-green-100 active:bg-green-400 duration-150 ${
+                      className={`my-3 cursor-pointer flex items-center gap-x-2 text-gray-700 text-base p-2 rounded-xl  hover:bg-orange-100 active:bg-orange-400 duration-150 ${
                         active === index
-                          ? "bg-green-100 border-l-4 border-b-4 border-green-500"
+                          ? "bg-orange-100 border-l-4 border-b-4 border-orange-500"
                           : ""
                       } `}
                     >
@@ -59,7 +59,7 @@ const Sidebar = () => {
                 <ul className="px-4 pb-4 text-sm font-medium">
                   {navsFooter.map((item, index) => (
                     <li key={index}>
-                      <a className="flex items-center gap-x-2 text-gray-700 text-base p-2 rounded-xl  hover:bg-green-100 active:bg-gray-100 duration-150">
+                      <a className="flex items-center gap-x-2 text-gray-700 text-base p-2 rounded-xl  hover:bg-orange-100 active:bg-gray-100 duration-150">
                         <div className="text-gray-500">{item.icon}</div>
                         {item.name}
                       </a>

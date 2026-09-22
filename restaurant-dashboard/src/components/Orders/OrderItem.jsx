@@ -39,7 +39,7 @@ const OrderItem = ({ date, id, total, status, lastName, firstName }) => {
                       }
                      ${
                        status == "COMPLETE" &&
-                       "border border-green-500  text-green-600 bg-green-50"
+                       "border border-orange-500  text-orange-600 bg-orange-50"
                      }
                   `}
         >

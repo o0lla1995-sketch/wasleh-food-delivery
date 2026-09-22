@@ -201,7 +201,7 @@ const OrderDelivery = ({ route }) => {
           strokeWidth={5}
           waypoints={deliveryStatus === "READY" ? [restaurantLocation] : []}
           strokeColor="green"
-          apikey="AIzaSyCi-MWuhMrs1DfJqTycPWS8N9KorPuAs-0"
+          apikey={process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY}
           onReady={(result) => {
             // setIsDriverClose(result.distance <= 0.1);
             setTotalMinutes(result.duration);
@@ -251,7 +251,7 @@ const OrderDelivery = ({ route }) => {
           <FontAwesome5
             name="shopping-bag"
             size={30}
-            color="#3FC060"
+            color="#FF6B35"
             style={{ marginHorizontal: 10 }}
           />
           <Text style={styles.routeDetailsText}>{totalKm.toFixed(2)} km</Text>
@@ -306,7 +306,7 @@ const OrderDelivery = ({ route }) => {
         <Pressable
           style={{
             ...styles.buttonContainer,
-            backgroundColor: "#3FC060",
+            backgroundColor: "#FF6B35",
           }}
           onPress={onButtonpressed}
         >

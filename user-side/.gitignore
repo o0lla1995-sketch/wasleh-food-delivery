@@ -1,18 +1,24 @@
-node_modules/
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# expo
 .expo/
+
+# env files (keep .env.example committed)
 .env
-dist/
-npm-debug.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-web-build/
+.env.local
+.env.*.local
 
-# macOS
+# misc
 .DS_Store
+*.pem
 
-# Temporary files created by Metro to check the health of the file watcher
-.metro-health-check*
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# typescript
+*.tsbuildinfo
