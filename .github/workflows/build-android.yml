@@ -65,7 +65,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: user-side
-        run: yarn install --frozen-lockfile
+        run: yarn install --no-immutable
 
       - name: Verify Firebase config
         working-directory: user-side
@@ -146,7 +146,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: driver-app
-        run: yarn install --frozen-lockfile
+        run: yarn install --no-immutable
 
       - name: Verify Firebase config
         working-directory: driver-app
